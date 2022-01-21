@@ -6,6 +6,8 @@ import "./ERC20Claimable.sol";
 import "./IExerciceSolution.sol";
 import "./IERC20Mintable.sol";
 import "./ExerciceSolution.sol";
+import "./ExerciceSolutionToken.sol";
+
 
 contract Evaluator 
 {
@@ -191,16 +193,17 @@ contract Evaluator
 	{
 		// Checking a solution was submitted
 		require(exerciceProgression[msg.sender][0], "No solution submitted");
-
+		
 		// Get ExerciceSolutionERC20 address
 		address exerciceSolutionERC20 = studentExerciceSolution[msg.sender].getERC20DepositAddress();
+	
 		IERC20Mintable ExerciceSolutionERC20 = IERC20Mintable(exerciceSolutionERC20);
-
+	
 		// Check that ExerciceSolution is a minter to ExerciceSolutionERC20
 		// Check that we are not a minter to ExerciceSolutionERC20
 		require(ExerciceSolutionERC20.isMinter(address(studentExerciceSolution[msg.sender])), "ExerciceSolution is not minter");
 		require(!ExerciceSolutionERC20.isMinter(address(this)), "Evaluator is minter");
-
+	
 		// Check that we can not mint ExerciceSolutionERC20 tokens 
 		bool wasMintAccepted = false;
 		try ExerciceSolutionERC20.mint(address(this), 10000)
@@ -212,9 +215,10 @@ contract Evaluator
             // This is executed in case revert() was used.
             wasMintAccepted = false;
         }
-
+		
+		
         require(!wasMintAccepted, "Evaluator was able to mint");
-
+		
 		// Crediting points
 		if (!exerciceProgression[msg.sender][7])
 		{

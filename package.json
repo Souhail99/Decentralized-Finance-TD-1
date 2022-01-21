@@ -2292,5 +2292,6 @@
       "resolved": "https://registry.npmjs.org/xtend/-/xtend-4.0.2.tgz",
       "version": "4.0.2"
     }
-  }
+  },
+  "devDependencies": {}
 }
